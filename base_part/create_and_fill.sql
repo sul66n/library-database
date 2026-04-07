@@ -1,3 +1,7 @@
+CREATE SCHEMA library;
+
+SET search_path TO library;
+
 -- tables
 
 CREATE TABLE reader (
@@ -21,15 +25,15 @@ CREATE TABLE book (
     title VARCHAR(200) NOT NULL,
     year INT,
     category_id INT,
-    FOREIGN KEY (category_id) REFERENCES category(category_id)
+    FOREIGN KEY (category_id) REFERENCES category(category_id) ON DELETE SET NULL
 );
 
 CREATE TABLE book_author (
     book_id INT,
     author_id INT,
     PRIMARY KEY (book_id, author_id),
-    FOREIGN KEY (book_id) REFERENCES book(book_id),
-    FOREIGN KEY (author_id) REFERENCES author(author_id)
+    FOREIGN KEY (book_id) REFERENCES book(book_id) ON DELETE CASCADE,
+    FOREIGN KEY (author_id) REFERENCES author(author_id) ON DELETE CASCADE
 );
 
 CREATE TABLE loan (
@@ -39,8 +43,8 @@ CREATE TABLE loan (
     issue_date DATE NOT NULL,
     return_date DATE,
     CHECK (return_date IS NULL OR return_date >= issue_date),
-    FOREIGN KEY (reader_id) REFERENCES reader(reader_id),
-    FOREIGN KEY (book_id) REFERENCES book(book_id)
+    FOREIGN KEY (reader_id) REFERENCES reader(reader_id) ON DELETE CASCADE,
+    FOREIGN KEY (book_id) REFERENCES book(book_id) ON DELETE CASCADE
 );
 
 CREATE TABLE reservation (
@@ -48,8 +52,8 @@ CREATE TABLE reservation (
     reader_id INT NOT NULL,
     book_id INT NOT NULL,
     reservation_date DATE DEFAULT CURRENT_DATE,
-    FOREIGN KEY (reader_id) REFERENCES reader(reader_id),
-    FOREIGN KEY (book_id) REFERENCES book(book_id)
+    FOREIGN KEY (reader_id) REFERENCES reader(reader_id) ON DELETE CASCADE,
+    FOREIGN KEY (book_id) REFERENCES book(book_id) ON DELETE CASCADE
 );
 
 -- data

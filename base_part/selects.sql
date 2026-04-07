@@ -12,7 +12,7 @@ JOIN author a ON ba.author_id = a.author_id;
 -- сколько книг брал читатель
 SELECT r.name, COUNT(l.loan_id) AS total
 FROM reader r
-LEFT JOIN loan l ON r.reader_id = l.reader_id
+JOIN loan l ON r.reader_id = l.reader_id
 GROUP BY r.name
 ORDER BY total DESC;
 
@@ -60,3 +60,10 @@ JOIN loan l ON r.reader_id = l.reader_id
 JOIN book b ON l.book_id = b.book_id
 JOIN category c ON b.category_id = c.category_id
 WHERE c.name = 'Fantasy';
+
+-- читатели, взявшие больше 2 книг
+SELECT r.name, COUNT(l.loan_id) AS total
+FROM reader r
+JOIN loan l ON r.reader_id = l.reader_id
+GROUP BY r.name
+HAVING COUNT(l.loan_id) > 2;
