@@ -11,3 +11,11 @@ SELECT r.name, COUNT(l.loan_id) AS total_books
 FROM reader r
 LEFT JOIN loan l ON r.reader_id = l.reader_id
 GROUP BY r.name;
+
+
+CREATE VIEW popular_books AS
+SELECT b.title, COUNT(l.loan_id) AS times_taken
+FROM book b
+JOIN loan l ON b.book_id = l.book_id
+GROUP BY b.title
+HAVING COUNT(l.loan_id) > 1;
